@@ -7,13 +7,12 @@ import { BottomLink } from "../ui/bottom-link";
 import { ErrorMessage } from "../ui/error-message";
 import { AuthFields } from "../ui/fields";
 import { SubmitButton } from "../ui/submit-button";
-import { signInAction } from "../actions/sign-in-action";
+import { signInAction } from "../actions/sign-in";
 
-interface Props {
-  className?: string;
-}
 
-export const SignInForm: React.FC<Props> = ({ className }) => {
+
+
+export const SignInForm: React.FC = () => {
   // @ts-ignore
   const [formState, action, isPending] = useActionState(
     signInAction,

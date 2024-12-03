@@ -11,6 +11,16 @@ const formDataSchema = z.object({
     password: z.string().min(3)
 })
 
+export type SignInFormState = {
+    formData?:FormData,
+    errors?: {
+      login?:string,
+      password?:string,
+      _errors?:string
+    }
+  }
+
+
 export const signInAction = async (state: unknown, formData: FormData) => {
 
     const data = Object.fromEntries(formData.entries())

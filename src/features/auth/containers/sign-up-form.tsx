@@ -7,7 +7,7 @@ import { SubmitButton } from "../ui/submit-button";
 import { mapLeft, right } from "@/shared/lib/either";
 import { BottomLink } from "../ui/bottom-link";
 import { ErrorMessage } from "../ui/error-message";
-import { signUpAction } from "../actions/sign-up-action";
+import { signUpAction } from "../actions/sign-up";
 
 interface Props {}
 
