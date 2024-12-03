@@ -45,3 +45,24 @@ export type PlayerEntity = {
 export type Field = Cell[]
 export type Cell = GameSymbol | null
 export type GameSymbol = string
+
+
+export const GameSymbols = {
+    X: 'X',
+    O: 'O'
+}
+
+
+export const getGameCurrentStep = (game: GameInProgressEntity | GameOverDrawEntity | GameOverEntity) => {
+    const symbols = game.field.filter(s => s !== null).length
+
+    return symbols % 2 === 0 ? GameSymbols.X : GameSymbols.O
+}
+
+export const getNextSymbol = (gameSymbol: GameSymbol) => {
+
+    if (gameSymbol === GameSymbols.X) {
+        return GameSymbols.O
+    }
+    return GameSymbols.X
+}
