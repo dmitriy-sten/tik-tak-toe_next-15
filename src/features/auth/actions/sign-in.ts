@@ -1,7 +1,6 @@
 'use server'
 
-import { createUser, sessionService, verifyUserPassword } from "@/entities/user/server"
-import { left, mapLeft } from "@/shared/lib/either"
+import { sessionService, verifyUserPassword } from "@/entities/user/server"
 import { redirect } from "next/navigation"
 
 import { z } from "zod"
@@ -12,23 +11,32 @@ const formDataSchema = z.object({
 })
 
 export type SignInFormState = {
-    formData?:FormData,
+    formData?: FormData,
     errors?: {
-      login?:string,
-      password?:string,
-      _errors?:string
+        login?: string,
+        password?: string,
+        _errors?: string
     }
-  }
+}
 
 
-export const signInAction = async (state: unknown, formData: FormData) => {
+export const signInAction = async (state: unknown, formData: FormData): Promise<SignInFormState> => {
 
     const data = Object.fromEntries(formData.entries())
 
     const result = formDataSchema.safeParse(data)
 
     if (!result.success) {
-        return left(`Validation-error ${result.error.message}`)
+        const formatedError = result.error.format()
+        return {
+            formData,
+            errors: {
+                login: formatedError.login?._errors.join(''),
+                password: formatedError.password?._errors.join(''),
+                _errors: formatedError._errors.join('')
+
+            }
+        }
     }
 
     const verifyUserResult = await verifyUserPassword(result.data)
@@ -39,10 +47,14 @@ export const signInAction = async (state: unknown, formData: FormData) => {
 
         redirect('/')
     }
+    const errors = {
+        'wrong-login-or-password': "Wrong login or password"
+    }[verifyUserResult.error]
 
-    return mapLeft(verifyUserResult, (error) => {
-        return {
-            'wrong-login-or-password': "Wrong login or password"
-        }[error]
-    })
+    return {
+        formData,
+        errors: {
+            _errors: errors
+        }
+    }
 }

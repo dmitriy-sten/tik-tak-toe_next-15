@@ -7,16 +7,15 @@ import { BottomLink } from "../ui/bottom-link";
 import { ErrorMessage } from "../ui/error-message";
 import { AuthFields } from "../ui/fields";
 import { SubmitButton } from "../ui/submit-button";
-import { signInAction } from "../actions/sign-in";
+import { signInAction, SignInFormState } from "../actions/sign-in";
 
 
 
 
 export const SignInForm: React.FC = () => {
-  // @ts-ignore
   const [formState, action, isPending] = useActionState(
     signInAction,
-    right(undefined),
+    {} as SignInFormState
   );
 
   return (
@@ -24,8 +23,8 @@ export const SignInForm: React.FC = () => {
       action={action}
       title="Sign In"
       description="Welcome back? Please sign in to your account."
-      error={<ErrorMessage error={formState} />}
-      fields={<AuthFields />}
+      error={<ErrorMessage error={formState.errors?._errors} />}
+      fields={<AuthFields {...formState} />}
       actions={<SubmitButton isPending={isPending}>Sign In</SubmitButton>}
       link={
         <BottomLink

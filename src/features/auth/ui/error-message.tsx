@@ -3,17 +3,16 @@ import { Alert, AlertDescription } from "@/shared/ui/alert";
 import React from "react";
 
 interface Props {
-  error: Either<string, unknown>;
+  error?: string;
 }
 
 export const ErrorMessage: React.FC<Props> = ({ error }) => {
-  return matchEither(error, {
-    left: (error) => (
+  if (error) {
+    return (
       <Alert variant={"destructive"}>
         <AlertDescription>{error}</AlertDescription>
       </Alert>
-    ),
-
-    right: () => null,
-  });
+    );
+  }
+  return null;
 };

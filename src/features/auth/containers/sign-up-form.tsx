@@ -4,10 +4,10 @@ import React, { useActionState } from "react";
 import { AuthFormLayout } from "../ui/auth-form-layout";
 import { AuthFields } from "../ui/fields";
 import { SubmitButton } from "../ui/submit-button";
-import { mapLeft, right } from "@/shared/lib/either";
 import { BottomLink } from "../ui/bottom-link";
 import { ErrorMessage } from "../ui/error-message";
-import { signUpAction } from "../actions/sign-up";
+import { signUpAction, SignUpFormState } from "../actions/sign-up";
+import { SignInFormState } from "../actions/sign-in";
 
 interface Props {}
 
@@ -15,9 +15,8 @@ export const SignUpForm: React.FC<Props> = ({}) => {
   //@ts-ignore
   const [formState, action, isPending] = useActionState(
     signUpAction,
-    right(undefined),
+    {} as SignUpFormState,
   );
-
 
   return (
     <AuthFormLayout
@@ -25,7 +24,7 @@ export const SignUpForm: React.FC<Props> = ({}) => {
       action={action}
       description="Create your account to get started"
       fields={<AuthFields />}
-      error={<ErrorMessage error={formState} />}
+      error={<ErrorMessage error={formState.errors?._errors} />}
       actions={<SubmitButton isPending={isPending}>Sign Up</SubmitButton>}
       link={
         <BottomLink

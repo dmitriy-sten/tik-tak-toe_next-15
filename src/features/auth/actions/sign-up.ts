@@ -1,10 +1,21 @@
 'use server'
 
 import { createUser, sessionService } from "@/entities/user/server"
-import { left, mapLeft } from "@/shared/lib/either"
 import { redirect } from "next/navigation"
 
 import { z } from "zod"
+
+
+
+
+export type SignUpFormState = {
+    formData?: FormData,
+    errors?: {
+        login?: string,
+        password?: string,
+        _errors?: string
+    }
+}
 
 const formDataSchema = z.object({
     login: z.string().min(3),
@@ -18,9 +29,17 @@ export const signUpAction = async (state: unknown, formData: FormData) => {
     const result = formDataSchema.safeParse(data)
 
     if (!result.success) {
-        return left(`Validation-error ${result.error.message}`)
-    }
+        const formatedError = result.error.format()
+        return {
+            formData,
+            errors: {
+                login: formatedError.login?._errors.join(''),
+                password: formatedError.password?._errors.join(''),
+                _errors: formatedError._errors.join('')
 
+            }
+        }
+    }
     const createUserResult = await createUser(result.data)
 
 
@@ -30,9 +49,14 @@ export const signUpAction = async (state: unknown, formData: FormData) => {
         redirect('/')
     }
 
-    return mapLeft(createUserResult, (error) => {
-        return {
-            'user-login-exists': "User with this login already exists"
-        }[error]
-    })
+    const errors = {
+        'user-login-exists': "Wrong login or password"
+    }[createUserResult.error]
+
+    return {
+        formData,
+        errors: {
+            _errors: errors
+        }
+    }
 }
