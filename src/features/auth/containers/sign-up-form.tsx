@@ -7,7 +7,6 @@ import { SubmitButton } from "../ui/submit-button";
 import { BottomLink } from "../ui/bottom-link";
 import { ErrorMessage } from "../ui/error-message";
 import { signUpAction, SignUpFormState } from "../actions/sign-up";
-import { SignInFormState } from "../actions/sign-in";
 
 interface Props {}
 
@@ -23,7 +22,7 @@ export const SignUpForm: React.FC<Props> = ({}) => {
       title="Sign Up"
       action={action}
       description="Create your account to get started"
-      fields={<AuthFields />}
+      fields={<AuthFields {...formState} />}
       error={<ErrorMessage error={formState.errors?._errors} />}
       actions={<SubmitButton isPending={isPending}>Sign Up</SubmitButton>}
       link={
@@ -33,7 +32,6 @@ export const SignUpForm: React.FC<Props> = ({}) => {
           url="/sign-in"
         />
       }
-      //   onSubmit={null}
     />
   );
 };
