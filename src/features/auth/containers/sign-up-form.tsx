@@ -7,7 +7,7 @@ import { SubmitButton } from "../ui/submit-button";
 import { mapLeft, right } from "@/shared/lib/either";
 import { BottomLink } from "../ui/bottom-link";
 import { ErrorMessage } from "../ui/error-message";
-import { signUpAction } from "../actions/sign-up-actions";
+import { signUpAction } from "../actions/sign-up-action";
 
 interface Props {}
 
@@ -19,19 +19,13 @@ export const SignUpForm: React.FC<Props> = ({}) => {
   );
 
 
-  const formStateErrors = mapLeft(formState, e=>(
-    {
-      ['login-allready-taken']:''
-    }
-  )[e] )
-
   return (
     <AuthFormLayout
       title="Sign Up"
       action={action}
       description="Create your account to get started"
       fields={<AuthFields />}
-      error={<ErrorMessage error={formStateErrors} />}
+      error={<ErrorMessage error={formState} />}
       actions={<SubmitButton isPending={isPending}>Sign Up</SubmitButton>}
       link={
         <BottomLink

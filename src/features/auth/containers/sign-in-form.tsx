@@ -1,27 +1,33 @@
-'use client'
+"use client";
 
-import { right } from "@/shared/lib/either";
-import React from "react";
+import { Right, right } from "@/shared/lib/either";
+import React, { useActionState } from "react";
 import { AuthFormLayout } from "../ui/auth-form-layout";
 import { BottomLink } from "../ui/bottom-link";
 import { ErrorMessage } from "../ui/error-message";
 import { AuthFields } from "../ui/fields";
 import { SubmitButton } from "../ui/submit-button";
+import { signInAction } from "../actions/sign-in-action";
 
 interface Props {
   className?: string;
 }
 
 export const SignInForm: React.FC<Props> = ({ className }) => {
+  // @ts-ignore
+  const [formState, action, isPending] = useActionState(
+    signInAction,
+    right(undefined),
+  );
+
   return (
     <AuthFormLayout
+      action={action}
       title="Sign In"
       description="Welcome back? Please sign in to your account."
-      error={<ErrorMessage error={right(null)} />}
-      fields={
-        <AuthFields />
-      }
-      actions={<SubmitButton>Sign In</SubmitButton>}
+      error={<ErrorMessage error={formState} />}
+      fields={<AuthFields />}
+      actions={<SubmitButton isPending={isPending}>Sign In</SubmitButton>}
       link={
         <BottomLink
           text="Don't have an account?"
@@ -29,7 +35,7 @@ export const SignInForm: React.FC<Props> = ({ className }) => {
           url="/sign-up"
         />
       }
-    //   onSubmit={}
     />
   );
 };
+
