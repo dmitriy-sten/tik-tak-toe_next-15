@@ -18,6 +18,7 @@ export function saveUser(user: UserEntity): Promise<UserEntity> {
 export function getUser(where: Prisma.UserWhereInput) {
     return prisma.user.findFirst({
         where
+        
     })
 }
 
