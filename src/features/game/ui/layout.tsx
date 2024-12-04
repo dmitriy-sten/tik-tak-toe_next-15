@@ -28,7 +28,7 @@ export const GameLayout: React.FC<Props> = ({
       <CardContent className="flex flex-col gap-4">
         {players}
         {status}
-        {field}
+        <div className="flex items-center justify-center mt-3">{field}</div>
       </CardContent>
       <CardFooter>{actions}</CardFooter>
     </Card>

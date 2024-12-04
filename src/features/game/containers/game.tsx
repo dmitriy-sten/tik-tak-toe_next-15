@@ -3,6 +3,8 @@ import React from "react";
 import { GameLayout } from "../ui/layout";
 import { GamePlayers } from "../ui/players";
 import { GameDomain } from "@/entities/game";
+import { GameStatus } from "../ui/status";
+import { GameField } from "../ui/field";
 
 interface Props {
   className?: string;
@@ -18,14 +20,15 @@ export const Game: React.FC<Props> = ({ className, gameId }) => {
       rating: 999,
     },
     status: "idle",
+    field:Array(9).fill(null)
   };
 
   return (
     <GameLayout
-      status={undefined}
-      field={undefined}
-      actions={undefined}
+      status={<GameStatus game={game} />}
+      field={<GameField game={game} />}
       players={<GamePlayers game={game} />}
+      actions={undefined}
     />
   );
 };

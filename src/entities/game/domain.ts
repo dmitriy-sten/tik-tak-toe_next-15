@@ -5,6 +5,7 @@ export type GameEntity = GameIdleEntity | GameInProgressEntity | GameOverEntity 
 export type GameIdleEntity = {
     id: GameId
     creator: PlayerEntity
+    field: Field
     status: 'idle'
 }
 
