@@ -26,7 +26,7 @@ export const Game: React.FC<Props> = ({ className, gameId }) => {
   return (
     <GameLayout
       status={<GameStatus game={game} />}
-      field={<GameField game={game} />}
+      field={<GameField game={game}  />}
       players={<GamePlayers game={game} />}
       actions={undefined}
     />

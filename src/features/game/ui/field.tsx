@@ -5,7 +5,7 @@ import React from "react";
 
 interface Props {
   game: GameDomain.GameEntity;
-  onCellClick: (index: number) => void;
+  onCellClick?: (index: number) => void;
 }
 
 export const GameField: React.FC<Props> = ({ game, onCellClick }) => {
@@ -13,7 +13,7 @@ export const GameField: React.FC<Props> = ({ game, onCellClick }) => {
     <div className="grid grid-cols-3">
       {game.field.map((symbol, index) => (
         <Button
-          onClick={() => onCellClick(index)}
+          onClick={() => onCellClick?.(index)}
           key={index}
           className="bg-transparent flex items-center justify-center border border-primary size-16"
         >
