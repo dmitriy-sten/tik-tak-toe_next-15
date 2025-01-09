@@ -5,6 +5,7 @@ import { CreateButton } from "./create-button";
 import { createGameAction } from "../actions/create-game";
 import { Button } from "@/shared/ui/button";
 import Link from "next/link";
+import { routes } from "@/kernel/routes";
 
 export async function GamesList() {
   const games = await getIdleGames();
@@ -18,7 +19,7 @@ export async function GamesList() {
           key={game.id}
           actions={
             <Button asChild>
-              <Link href={`/game/${game.id}`}>Connect</Link>
+              <Link href={routes.game(game.id)}>Connect</Link>
             </Button>
           }
         />
