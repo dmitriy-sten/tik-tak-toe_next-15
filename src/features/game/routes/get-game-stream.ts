@@ -6,6 +6,7 @@ export function getGameStream(req: NextRequest) {
 
     let counter = 1
 
+
     const interval = setInterval(() => {
         write(counter++)
 
