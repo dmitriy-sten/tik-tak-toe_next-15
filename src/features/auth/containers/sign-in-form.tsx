@@ -8,6 +8,7 @@ import { ErrorMessage } from "../ui/error-message";
 import { AuthFields } from "../ui/fields";
 import { SubmitButton } from "../ui/submit-button";
 import { signInAction, SignInFormState } from "../actions/sign-in";
+import { routes } from "@/kernel/routes";
 
 
 
@@ -30,7 +31,7 @@ export const SignInForm: React.FC = () => {
         <BottomLink
           text="Don't have an account?"
           linkText="Sign up"
-          url="/sign-up"
+          url={routes.signUp()}
         />
       }
     />

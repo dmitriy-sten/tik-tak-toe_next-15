@@ -4,10 +4,9 @@ import { GameId } from "@/kernel/ids";
 import React from "react";
 import { GameLayout } from "../ui/layout";
 import { GamePlayers } from "../ui/players";
-import { GameDomain } from "@/entities/game";
 import { GameStatus } from "../ui/status";
 import { GameField } from "../ui/field";
-import { useEventSource } from "@/shared/lib/sse/client";
+import { useGame } from "../model/use-game";
 
 interface Props {
   className?: string;
@@ -15,19 +14,11 @@ interface Props {
 }
 
 export const Game: React.FC<Props> = ({ className, gameId }) => {
-  const { dataStream } = useEventSource(`/game/${gameId}/stream`, 1);
+  const { game, isPending } = useGame(gameId);
 
-  const game: GameDomain.GameEntity = {
-    id: "1",
-    creator: {
-      id: "1",
-      login: "test",
-      rating: 999,
-    },
-    status: "idle",
-    field: Array(9).fill(null),
-  };
-
+  if (!game || isPending) {
+    return <GameLayout status={"Loading"} />;
+  }
 
   return (
     <GameLayout

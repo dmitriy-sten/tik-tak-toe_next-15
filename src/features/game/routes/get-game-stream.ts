@@ -1,20 +1,29 @@
+import { getGameById } from "@/entities/game/server";
+import { GameId } from "@/kernel/ids";
 import { sseStream } from "@/shared/lib/sse/server";
 import { NextRequest } from "next/server";
 
-export function getGameStream(req: NextRequest) {
+export async function getGameStream(
+    req: NextRequest,
+    { params }: { params: Promise<{ id: GameId }> }
+) {
+    const { id } = await params
+    
+    const game = await getGameById(id)
+    
+    if(!game){
+        return new Response('Game not found',{
+            status:404
+        })
+    }
+    
+
     const { addCloseListener, response, write } = sseStream(req)
 
-    let counter = 1
+    write(game)
 
 
-    const interval = setInterval(() => {
-        write(counter++)
-
-    }, 1000)
-
-    addCloseListener(() => {
-        clearInterval(interval)
-    })
+    addCloseListener(()=>{})
     return response
 
 }

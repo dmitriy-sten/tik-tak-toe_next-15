@@ -9,8 +9,8 @@ import React from "react";
 
 interface Props {
   status: React.ReactNode;
-  field: React.ReactNode;
-  actions: React.ReactNode;
+  field?: React.ReactNode;
+  actions?: React.ReactNode;
   players?: React.ReactNode;
 }
 

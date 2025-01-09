@@ -3,17 +3,24 @@ import { Layout } from "../ui/layout";
 import { GameCard } from "../ui/game-card";
 import { CreateButton } from "./create-button";
 import { createGameAction } from "../actions/create-game";
+import { Button } from "@/shared/ui/button";
+import Link from "next/link";
 
 export async function GamesList() {
-  const ganes = await getIdleGames();
+  const games = await getIdleGames();
 
   return (
     <Layout actions={<CreateButton />}>
-      {ganes.map((game) => (
+      {games.map((game) => (
         <GameCard
           login={game.creator.login}
           rating={game.creator.rating}
           key={game.id}
+          actions={
+            <Button asChild>
+              <Link href={`/game/${game.id}`}>Connect</Link>
+            </Button>
+          }
         />
       ))}
     </Layout>

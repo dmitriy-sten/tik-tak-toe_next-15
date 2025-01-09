@@ -7,6 +7,7 @@ import { SubmitButton } from "../ui/submit-button";
 import { BottomLink } from "../ui/bottom-link";
 import { ErrorMessage } from "../ui/error-message";
 import { signUpAction, SignUpFormState } from "../actions/sign-up";
+import { routes } from "@/kernel/routes";
 
 interface Props {}
 
@@ -29,7 +30,7 @@ export const SignUpForm: React.FC<Props> = ({}) => {
         <BottomLink
           text="Already have account?"
           linkText="Sign in"
-          url="/sign-in"
+          url={routes.signIn()}
         />
       }
     />
