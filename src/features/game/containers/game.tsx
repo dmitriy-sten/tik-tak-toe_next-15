@@ -1,31 +1,26 @@
-"use client";
-
 import { GameId } from "@/kernel/ids";
 import React from "react";
-import { GameLayout } from "../ui/layout";
-import { GamePlayers } from "../ui/players";
-import { GameStatus } from "../ui/status";
-import { GameField } from "../ui/field";
-import { useGame } from "../model/use-game";
+import { GameClient } from "./game-client";
+import { getCurrentUser } from "@/entities/user/server";
+import { getGameById, startGame } from "@/entities/game/server";
+import { gameEvents } from "../services/game-events";
 
 interface Props {
-  className?: string;
   gameId: GameId;
 }
 
-export const Game: React.FC<Props> = ({ className, gameId }) => {
-  const { game, isPending } = useGame(gameId);
+export const Game: React.FC<Props> = async ({ gameId }) => {
+  const user = await getCurrentUser();
 
-  if (!game || isPending) {
-    return <GameLayout status={"Loading"} />;
+  let game = await getGameById(gameId)
+
+  if (user) {
+    const startGameResult = await startGame(gameId, user);
+
+    if (startGameResult?.type === "right") {
+      gameEvents.emit(startGameResult.value);
+    }
   }
 
-  return (
-    <GameLayout
-      status={<GameStatus game={game} />}
-      field={<GameField game={game} />}
-      players={<GamePlayers game={game} />}
-      actions={undefined}
-    />
-  );
+  return <GameClient gameId={gameId} />;
 };
