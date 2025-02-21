@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { GameId } from "@/kernel/ids";
 import React from "react";
@@ -7,18 +7,14 @@ import { GamePlayers } from "../ui/players";
 import { GameStatus } from "../ui/status";
 import { GameField } from "../ui/field";
 import { useGame } from "../model/use-game";
+import { GameDomain } from "@/entities/game";
 
 interface Props {
-  className?: string;
-  gameId: GameId;
+  defaultGame: GameDomain.GameEntity;
 }
 
-export const GameClient: React.FC<Props> = ({ className, gameId }) => {
-  const { game, isPending } = useGame(gameId);
-
-  if (!game || isPending) {
-    return <GameLayout status={"Loading"} />;
-  }
+export const GameClient: React.FC<Props> = ({ defaultGame }) => {
+  const { game = defaultGame } = useGame(defaultGame.id);
 
   return (
     <GameLayout
